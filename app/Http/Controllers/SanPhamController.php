@@ -30,7 +30,7 @@ class SanPhamController extends Controller
     {
 
         $listsanpham = SanPham::where('TrangThai', 1);
-        $listsanpham =   $listsanpham->join('product_catalogues', 'product_catalogues.id', '=', 'san_phams.product_catalogues_id')->where('product_catalogues.status', '=',1);
+        $listsanpham =   $listsanpham->join('product_catalogues', 'product_catalogues.id', '=', 'san_phams.product_catalogues_id')->where('product_catalogues.status', '=',1)->select('san_phams.*', 'product_catalogues.name');
         if($request->search) $listsanpham=$listsanpham->where('TenSanPham', 'LIKE','%'.$request->search.'%');
         if($request->category>0) {
             $listsanpham=$listsanpham->where('loai_san_phams_id',$request->category);
