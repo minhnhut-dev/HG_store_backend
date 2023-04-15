@@ -50,11 +50,11 @@
                     @endif
 
                     <div class="form-group row">
-                        <input type="text" class="form-control-transparent" id="inputUserName" name="username"
+                        <input type="text" class="form-control" id="inputUserName" name="username"
                             placeholder="Tên tài khoản">
                     </div>
                     <div class="form-group row">
-                        <input type="password" class="form-control-transparent" id="inputPassword" name="password"
+                        <input type="password" class="form-control" id="inputPassword" name="password"
                             placeholder="Mật khẩu" >
                     </div>
                     <div class="form-group row">
