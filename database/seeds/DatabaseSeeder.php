@@ -15,14 +15,14 @@ class DatabaseSeeder extends Seeder
         $this->call(loai_nguoi_dungs::class);
         $this->call(nguoi_dungs::class);
         $this->call(loai_san_phams::class);
-        $this->call(san_phams::class);
-        $this->call(anh_san_phams::class);
+        // $this->call(san_phams::class);
+        // $this->call(anh_san_phams::class);
         $this->call(hinh_thuc_giao_hangs::class);
         $this->call(hinh_thuc_thanh_toans::class);
         $this->call(trang_thai_don_hangs::class);
-        $this->call(don_hangs::class);
-        $this->call(chi_tiet_don_hangs::class);
-        $this->call(slides::class);
+        // $this->call(don_hangs::class);
+        // $this->call(chi_tiet_don_hangs::class);
+        // $this->call(slides::class);
 
     }
 
