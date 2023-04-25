@@ -2,3 +2,4 @@
 public/.DS_Store
 composer.lock
 storage/logs/laravel.log
+/vendor
