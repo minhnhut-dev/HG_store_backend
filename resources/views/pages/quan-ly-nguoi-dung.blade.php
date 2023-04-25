@@ -54,7 +54,6 @@
                                     <th>Địa chỉ</th>
                                     <th>Loại người dùng</th>
                                     <th>Trạng thái</th>
-                                 
                                     <th>Chức năng</th>
                                 </tr>
                             </thead>
@@ -97,10 +96,11 @@
                                             if($item->active==1){
                                                 $btn='bg-success';
                                                 $title='Hoạt động';
-                                            }else {
-                                                $btn='bg-danger';
-                                                $title='Chưa xác thực mail';
                                             }
+                                            // else {
+                                            //     $btn='bg-danger';
+                                            //     $title='Chưa xác thực mail';
+                                            // }
 
                                         }
                                     }
@@ -115,7 +115,7 @@
                                     <td>{{$item->Email}}</td>
                                     <td>{{$item->DiaChi}}</td>
                                     <td>{{$item->TenLoai}}</td>
-                                    <td> 
+                                    <td>
                                         <span class="card {{$btn}} status">
                                         {{$title}}
                                         </span>

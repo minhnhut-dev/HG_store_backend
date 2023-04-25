@@ -30,10 +30,10 @@
                             <i class="fas fa-plus-circle"></i>
                             Thêm mới
                         </a>
-                        <a class="btn btn-dark left" role="button" href={{ url('quan-ly-loai-san-pham/thung-rac')}}>
+                        {{-- <a class="btn btn-dark left" role="button" href={{ url('quan-ly-loai-san-pham/thung-rac')}}>
                                 <i class="fas fa-trash"></i>
                                 Các loại sản phẩm đã xoá
-                            </a>
+                            </a> --}}
                         <div class="card-tools">
                         <form method="GET" action="">
                             <div class="input-group">

@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Classes\OrderConfirmationService;
-use App\Classes\PaymentMomoService;
 
 class OrderController extends Controller
 {
@@ -23,13 +22,13 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $orders['orders'] = DB::select('SELECT nguoi_dungs.TenNguoidung, nguoi_dungs.SDT, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.ThoiGianMua, don_hangs.Tongtien, don_hangs.trang_thai_don_hangs_id, trang_thai_don_hangs.TenTrangThai
-        FROM `don_hangs` INNER JOIN `nguoi_dungs` ON `don_hangs`.nguoi_dungs_id=`nguoi_dungs`.id
+        $orders['orders'] = DB::select('SELECT don_hangs.ten_nguoi_dung, don_hangs.sdt, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.ThoiGianMua, don_hangs.Tongtien, don_hangs.trang_thai_don_hangs_id, trang_thai_don_hangs.TenTrangThai
+        FROM `don_hangs`
         INNER JOIN `trang_thai_don_hangs` ON `don_hangs`.trang_thai_don_hangs_id=`trang_thai_don_hangs`.id ORDER BY don_hangs.ThoiGianMua DESC;
         ');
         if ($request->search) {
             $orders['orders'] = DB::select('SELECT nguoi_dungs.TenNguoidung, nguoi_dungs.SDT, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.ThoiGianMua, don_hangs.Tongtien, don_hangs.trang_thai_don_hangs_id, trang_thai_don_hangs.TenTrangThai
-            FROM `don_hangs` INNER JOIN `nguoi_dungs` ON `don_hangs`.nguoi_dungs_id=`nguoi_dungs`.id
+            FROM `don_hangs`
             INNER JOIN `trang_thai_don_hangs` ON `don_hangs`.trang_thai_don_hangs_id=`trang_thai_don_hangs`.id
             WHERE don_hangs.id = "' . $request->search . '"
             OR nguoi_dungs.TenNguoidung LIKE "%' . $request->search . '%"
@@ -146,15 +145,13 @@ class OrderController extends Controller
         $rule = [
             "hinh_thuc_giao_hangs_id" => "required",
             'hinh_thuc_thanh_toans_id' => "required",
-            "nguoi_dungs_id" => "required",
+            'trang_thai_don_hangs_id' => "required",
         ];
         $customMessage = [
-            // "Email.unique"=>"Email đã tồn tại !",
-            // "username.unique"=>"Tên tài khoản đã tồn tại !",
-            // "username.min" =>"Tên tài khoản phải lớn hơn 5 ký tự !",
             "hinh_thuc_giao_hangs_id.required" => "Hình thức giao hàng bắt buộc !",
             "hinh_thuc_thanh_toans_id.required" => "Hình thức thanh toán bắt buộc !",
-            "nguoi_dungs_id.required" => "Bạn chưa đăng nhập vui lòng đăng nhập !",
+            "trang_thai_don_hangs_id.required" => " Trạng thái đơn hàng  là bắt buộc!",
+
         ];
         $validator = Validator::make($request->all(), $rule, $customMessage);
         if ($validator->fails()) {
@@ -163,7 +160,10 @@ class OrderController extends Controller
         }
         // try {
         $order = new DonHang;
-        $order->nguoi_dungs_id = $request->nguoi_dungs_id;
+        $order->ten_nguoi_dung = $request->ten_nguoi_dung;
+        $order->email = $request->email;
+        $order->sdt = $request->sdt;
+        $order->diachigiaohang = $request->diachigiaohang;
         $order->hinh_thuc_giao_hangs_id = $request->hinh_thuc_giao_hangs_id;
         $order->hinh_thuc_thanh_toans_id = $request->hinh_thuc_thanh_toans_id;
         $order->ThoiGianMua = Carbon::now();
@@ -191,6 +191,7 @@ class OrderController extends Controller
         }
         $order->Tongtien = $total;
         $order->save();
+        OrderConfirmationService::sendOrderConfirmationEmail($order->id);
         DB::commit();
         return response(['message' => 'successful', 'order' => $order]);
     }
@@ -218,7 +219,6 @@ class OrderController extends Controller
         }
         // try {
         $order = new DonHang;
-        $order->nguoi_dungs_id = $request->nguoi_dungs_id;
         $order->hinh_thuc_giao_hangs_id = $request->hinh_thuc_giao_hangs_id;
         $order->hinh_thuc_thanh_toans_id = $request->hinh_thuc_thanh_toans_id;
         $order->ThoiGianMua = Carbon::now();
@@ -250,14 +250,7 @@ class OrderController extends Controller
         if($order->trang_thai_don_hangs_id ==1)
         {
             OrderConfirmationService::sendOrderConfirmationEmail($order->id);
-
         }
-
-
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     return response(['message' => 'unsuccessful', 'error' => $e],500);
-        // }
         return response(['message' => 'successful', 'order' => $order]);
     }
 
@@ -346,8 +339,8 @@ class OrderController extends Controller
         // $order=DB::table('don_hangs')->where('don_hangs.id','=',$id)
         // ->join('hinh_thuc_thanh_toans', 'don_hangs.hinh_thuc_thanh_toans_id', '=', 'hinh_thuc_thanh_toans.id')
         // ->join('nguoi_dungs', 'don_hangs.id', '=', 'nguoi_dungs.id')->first();
-        $orders = DB::select('SELECT nguoi_dungs.TenNguoidung, nguoi_dungs.SDT, trang_thai_don_hangs.TenTrangThai, don_hangs.trang_thai_don_hangs_id, nguoi_dungs.DiaChi, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.Tongtien, hinh_thuc_thanh_toans.TenThanhToan
-            FROM `don_hangs` INNER JOIN `nguoi_dungs` ON `don_hangs`.nguoi_dungs_id=`nguoi_dungs`.id
+        $orders = DB::select('SELECT don_hangs.ten_nguoi_dung, don_hangs.sdt, trang_thai_don_hangs.TenTrangThai, don_hangs.trang_thai_don_hangs_id, don_hangs.diachigiaohang, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.Tongtien, hinh_thuc_thanh_toans.TenThanhToan
+            FROM `don_hangs`
             INNER JOIN `hinh_thuc_thanh_toans` ON `don_hangs`.hinh_thuc_thanh_toans_id=`hinh_thuc_thanh_toans`.id
             INNER JOIN `trang_thai_don_hangs` ON `don_hangs`.trang_thai_don_hangs_id=`trang_thai_don_hangs`.id
             WHERE don_hangs.id=' . $id . ' LIMIT 1');
@@ -468,10 +461,10 @@ class OrderController extends Controller
 
     public function getInformationOrderById($id)
     {
-        $data = DB::select('SELECT don_hangs.* ,nguoi_dungs.TenNguoidung,nguoi_dungs.DiaChi,hinh_thuc_thanh_toans.TenThanhToan,hinh_thuc_giao_hangs.TenHinhThuc,nguoi_dungs.SDT
-        FROM don_hangs, nguoi_dungs,hinh_thuc_thanh_toans,hinh_thuc_giao_hangs
+        $data = DB::select('SELECT don_hangs.* ,don_hangs.ten_nguoi_dung,don_hangs.diachigiaohang,hinh_thuc_thanh_toans.TenThanhToan,hinh_thuc_giao_hangs.TenHinhThuc,don_hangs.SDT
+        FROM don_hangs,hinh_thuc_thanh_toans,hinh_thuc_giao_hangs
         WHERE don_hangs.id=? AND don_hangs.hinh_thuc_giao_hangs_id=hinh_thuc_giao_hangs.id
-         AND don_hangs.hinh_thuc_thanh_toans_id=hinh_thuc_thanh_toans.id AND nguoi_dungs.id=don_hangs.nguoi_dungs_id
+         AND don_hangs.hinh_thuc_thanh_toans_id=hinh_thuc_thanh_toans.id
         ', [$id]);
         return response()->json($data, 200);
     }

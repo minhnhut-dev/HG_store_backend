@@ -19,7 +19,7 @@
 <!-- Main content -->
 <div class="content">
 
-   
+
 
     <div class="container-fluid">
         <div class="row">
@@ -37,7 +37,7 @@
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="d-flex justify-content-between align-items-center">
-                        <div id="title-revenue-month"> 
+                        <div id="title-revenue-month">
                                 <h3 class="card-title" style="display:flex;">Doanh thu tháng ... năm ... đang tải ...</h3>
                             </div>
                             <div class="col-md-2" style="display: flex ; align-items: center; align-items: center;"><p style="margin :0 8px 0 0">Tháng  </p>
@@ -64,12 +64,12 @@
                                 <select class="form-control value-revenue-month" id="status-month" name="status_month">
                                 <option value="0">Tất cả</option>
                                     @forEach($orders_status as $item)
-                                  
+
                                         <option value="{{$item->id}}">{{$item->TenTrangThai}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            
+
                             <button type="submit" class="btn btn-primary">Xuất excel</button>
                         </div>
                     </div>
@@ -81,16 +81,16 @@
 
             </form>
             </div>
-           
+
             <div class="col-lg-12">
             <form method="GET" action="/doanh-thu/nam">
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div id="title-revenue-year"> 
+                            <div id="title-revenue-year">
                                 <h3 class="card-title" style="display:flex;">Doanh thu năm đang tải ...</h3>
                             </div>
-                            
+
                         <!-- <h3 class="card-title">Doanh thu năm {{ $year_year}}: {{number_format($total_sales_year, 0, '', ',')}} VNĐ</h3> -->
                             <div class="col-md-2" style="display: flex ; align-items: center;"><p style="margin : 0 8px 0 0">Năm  </p>
                             @php
@@ -100,7 +100,7 @@
                                 <select class="form-control value-revenue-year" id="year-revenue-year" name="year_revenue_year">
                                     @for($i=0;$i<$len;$i++)
                                     <option {{@$year_year==$i+$start_year?'selected':''}} value="{{$i+$start_year}}">{{$i+$start_year}}</option>
-                                  
+
                                         <!-- <option {{@$_GET['year_revenue_year']==$i+$start_year?'selected':''}} value="{{$i+$start_year}}">{{$i+$start_year}}</option> -->
                                     @endfor
                                     <option  value="2020">2020</option>
@@ -126,7 +126,7 @@
 
                 </form>
             </div>
- 
+
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header border-0">
@@ -152,37 +152,37 @@
                                 @foreach ($orders as $order)
                                 @php
                                 switch($order->TenTrangThai){
-                                        case 'Chưa thanh toán': 
+                                        case 'Chưa thanh toán':
                                             $success = 'bg-warning';
                                             break;
-                                        
-                                        case 'Đã thanh toán': 
+
+                                        case 'Đã thanh toán':
                                             $success = 'bg-primary';
                                             break;
-                                        
-                                        case 'Đã xác nhận': 
+
+                                        case 'Đã xác nhận':
                                             $success = 'bg-info';
                                             break;
-                                        
-                                        case 'Đã hủy': 
+
+                                        case 'Đã hủy':
                                             $success = 'bg-dark';
                                             break;
-                                        
-                                        case 'Đã hoàn thành': 
+
+                                        case 'Đã hoàn thành':
                                             $success = 'bg-success';
                                             break;
-                                        
+
                                         default:
                                             $success = 'bg-danger';
-                                        
+
                                     }
                                 @endphp
-                                
+
                                 <tr>
                                     <td>
-                                    <a href="/quan-ly-don-hang/{{$order->id}}">{{$order->id}}</a> 
+                                    <a href="/quan-ly-don-hang/{{$order->id}}">{{$order->id}}</a>
                                     </td>
-                                    <td>{{$order->TenNguoidung}} - SĐT: {{$order->SDT}}</td>
+                                    <td>{{$order->ten_nguoi_dung}} - SĐT: {{$order->sdt}}</td>
                                     <td>
                                         {{$order->SanPhams}}
                                     </td>
@@ -243,7 +243,7 @@
         chart.paddingBottom = 30;
 
         chart.data = {!!json_encode($chart_product)!!};
-   
+
         var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
         categoryAxis.dataFields.category = "name";
         categoryAxis.renderer.grid.template.strokeOpacity = 0;
@@ -261,7 +261,7 @@
         valueAxis.min = 0;
         valueAxis.cursorTooltipEnabled = false;
         valueAxis.renderer.baseGrid.strokeOpacity = 0;
-       
+
         var series = chart.series.push(new am4charts.ColumnSeries);
         series.dataFields.valueY = "steps";
         series.dataFields.categoryX = "name";
@@ -359,7 +359,7 @@
                     var body = JSON.parse(JSON.stringify(data));
                         // Add data
                     chart3.data= data.revenue;
-                            
+
                                 // Create axes
                     var categoryAxis = chart3.xAxes.push(new am4charts.CategoryAxis());
                     categoryAxis.dataFields.category = "date";
@@ -405,15 +405,15 @@
 
 
                     var html= '<h3 class="card-title">Doanh thu tháng '+data.month+' năm '+data.year+': '+data.total+'</h3>';
-                    
+
                     $("#title-revenue-month").html(html);
                 },
                 error: function (data) {
                     chart3.data=[];
                 }
             });
-       
-    
+
+
 
         $('.value-revenue-month').change(function(){
                 $.ajax({
@@ -424,9 +424,9 @@
                 success: function (data) {
                     var body = JSON.parse(JSON.stringify(data));
                     chart3.data= data.revenue;
-           
+
                     var html= '<h3 class="card-title">Doanh thu tháng '+data.month+' năm '+data.year+': '+data.total+'</h3>';
-                    
+
                     $("#title-revenue-month").html(html);
                 },
                 error: function (data) {
@@ -434,14 +434,14 @@
                 }
             });
         });
-    }); 
-        
+    });
+
 </script>
 <style>
 #chart-revenue {
   width: 100%;
   height: 500px;
-}																
+}
 </style>
 <script>
     am4core.ready(function() {
@@ -479,7 +479,7 @@
                         columnTemplate.strokeWidth = 2;
                         columnTemplate.strokeOpacity = 1;
                         $html= '<h3 class="card-title">Doanh thu năm '+data.year+': '+data.total+'</h3>';
-                        
+
                         $("#title-revenue-year").html($html);
                     },
                     error: function (data) {
@@ -498,7 +498,7 @@
                         var body = JSON.parse(JSON.stringify(data));
                         chart.data= data.revenue;
                         $html= '<h3 class="card-title">Doanh thu năm '+data.year+': '+data.total+'</h3>';
-                        
+
                         $("#title-revenue-year").html($html);
                     },
                     error: function (data) {
@@ -506,7 +506,7 @@
                     }
                 });
         });
-    }); 
+    });
 </script>
 @endsection
 @endsection

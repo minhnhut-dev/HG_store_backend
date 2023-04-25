@@ -30,10 +30,6 @@
                                 <i class="fas fa-plus-circle"></i>
                                 Thêm mới sản phẩm
                             </a>
-                            <a class="btn btn-dark" role="button" href={{ url('quan-ly-san-pham/thung-rac')}}>
-                                <i class="fas fa-trash"></i>
-                                Các sản phẩm đã xoá
-                            </a>
                             <form method="GET" >
                             <div class="row advance d-flex card-tools">
                                     Loại sản phẩm

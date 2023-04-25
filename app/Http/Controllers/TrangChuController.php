@@ -25,11 +25,11 @@ class TrangChuController extends Controller
 {
     public function exportExcelMonth(Request $request)
     {
-       
+
             $month = $request->month? $request->month:date('m');
             $year = $request->year_revenue_month? $request->year_revenue_month:date('Y');
             $max_day =(int)date('m')==$month&& (int)date('Y')==$year?date('d'):0;
-           
+
             $status = $request->status_month<6&&$request->status_month>0?$request->status_month:0;
             $order_status= TrangThaiDonHang::find($status);
             $status_name = $order_status?$order_status->TenTrangThai:'Tất cả';
@@ -38,13 +38,13 @@ class TrangChuController extends Controller
     }
     public function exportExcelYear(Request $request)
     {
-      
+
             $year = $request->year_revenue_year?$request->year_revenue_year:date('Y');
             $max_month =(int)date('Y')==$year?date('m'):0;
             $status = $request->status_year<6&&$request->status_year>0?$request->status_year:0;
             $order_status= TrangThaiDonHang::find($status);
             $status_name = $order_status?$order_status->TenTrangThai:'Tất cả';
-           
+
             return Excel::download(new RevenueYearExport($max_month, $year,$status,$status_name),'Doanh thu ('.$status_name.') năm '.$year.' TVStore.xlsx');
 
     }
@@ -64,7 +64,7 @@ class TrangChuController extends Controller
             ];
             $total_sales+=$item["revenue"];
             array_push($revenue,$item1);
-        }  
+        }
         $total_sales = number_format($total_sales, 0, '', ',').' VNĐ';
         return response()->json(['total'=>$total_sales,'revenue'=>  $revenue,'year'=>$year_month,'month'=>$month]);
     }
@@ -113,10 +113,10 @@ class TrangChuController extends Controller
         // limit 5
         $prods= array_slice($prods,0,5);
 
-    
-        $orders = DB::table('don_hangs')->join('nguoi_dungs', 'nguoi_dungs.id', '=', 'don_hangs.nguoi_dungs_id')
+
+        $orders = DB::table('don_hangs')
         ->join('trang_thai_don_hangs','don_hangs.trang_thai_don_hangs_id','=','trang_thai_don_hangs.id')
-        ->select('nguoi_dungs.TenNguoidung','nguoi_dungs.SDT','don_hangs.*','trang_thai_don_hangs.TenTrangThai')->limit(5)->orderBy('don_hangs.ThoiGianMua', 'DESC')->get();
+        ->select('don_hangs.ten_nguoi_dung','don_hangs.sdt','don_hangs.*','trang_thai_don_hangs.TenTrangThai')->limit(5)->orderBy('don_hangs.ThoiGianMua', 'DESC')->get();
 
         foreach ($orders as $item) {
 
@@ -133,16 +133,16 @@ class TrangChuController extends Controller
         $year_year = ($request->year_revenue_year&&$request->year_revenue_year!='undefined')? $request->year_revenue_year:date('Y');
         $revenue =[];
         $total_sales= 0;
-      
+
         $revenue_year =[];
         $total_sales_year= 0;
-      
+
         $orders_status = TrangThaiDonHang::get();
         return view('pages.trang-chu', compact('prods','orders','chart_product'
         ,'year_month','year_year',
         'month','total_sales','total_sales_year','orders_status'));
     }
-    
+
     public function FormLogin()
     {
         return view('pages.dang-nhap');
@@ -177,7 +177,7 @@ class TrangChuController extends Controller
         } else {
             // đăng nhập sai
             //if any error send back with message.
-            $errors=new MessageBag(['password'=>['Username or password invalid']]);
+            $errors=new MessageBag(['password'=>['Tài khoản hoặc mật khẩu không hợp lệ']]);
 
             return redirect('/login')->withErrors($errors);
         }

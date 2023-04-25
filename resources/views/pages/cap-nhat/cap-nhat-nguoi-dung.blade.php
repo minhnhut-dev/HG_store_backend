@@ -104,7 +104,7 @@
                     </select>
                 </div>
             </div>
-            
+
 
 
             <div class="form-group col-md-6">
@@ -148,7 +148,7 @@
                 <div class="error">{{$item}}</div>
                 @endforeach
                 @endif
-                
+
             </div>
             @endif
             @if(!$errors->has('password'))
@@ -168,7 +168,7 @@
                 <div class="error">{{$item}}</div>
                 @endforeach
                 @endif
-                
+
             </div>
             @endif
 
@@ -209,8 +209,8 @@
     </div>
     @if($user->TenLoai!='Admin')
     <div class="container">
-    <div class="row" id="table-orders">
-       
+    {{-- <div class="row" id="table-orders">
+
         <div class="col-12">
         <h2>Danh sách order</h2>
             <hr>
@@ -290,7 +290,7 @@
             </nav>
             <!-- /.card -->
         </div>
-    </div>
+    </div> --}}
     </div>
     @endif
 </section>

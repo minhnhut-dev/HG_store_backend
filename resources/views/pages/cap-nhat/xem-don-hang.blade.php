@@ -68,21 +68,21 @@ switch(  $order->trang_thai_don_hangs_id){
                                         <td class="label">Khách hàng:</td>
                                         <td width="2%"></td>
                                         <td class="total">
-                                            <span class=" amount"><bdi><span class="woocommerce-Price-currencySymbol">{{$order->TenNguoidung}}</span></bdi></span>
+                                            <span class=" amount"><bdi><span class="woocommerce-Price-currencySymbol">{{$order->ten_nguoi_dung}}</span></bdi></span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label">Địa chỉ:</td>
                                         <td width="2%"></td>
                                         <td class="total">
-                                            <span class=" amount"><bdi><span class="woocommerce-Price-currencySymbol"></span>{{$order->DiaChi}}</bdi></span>
+                                            <span class=" amount"><bdi><span class="woocommerce-Price-currencySymbol"></span>{{$order->diachigiaohang}}</bdi></span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label">Số điện thoại:</td>
                                         <td width="2%"></td>
                                         <td class="total">
-                                            <span class=" amount"><bdi><span class="woocommerce-Price-currencySymbol"></span>{{$order->SDT}}</bdi></span>
+                                            <span class=" amount"><bdi><span class="woocommerce-Price-currencySymbol"></span>{{$order->sdt}}</bdi></span>
                                         </td>
                                     </tr>
                                     <tr>

@@ -113,13 +113,13 @@ class CustomerController extends Controller
             return redirect('/quan-ly-nguoi-dung/my-profile');
         }
 
-        $orders['orders'] = DB::select('SELECT nguoi_dungs.TenNguoidung,nguoi_dungs.SDT,don_hangs.id,don_hangs.ThoiGianMua,don_hangs.Tongtien FROM `don_hangs`
-        INNER JOIN `nguoi_dungs` ON `don_hangs`.nguoi_dungs_id=`nguoi_dungs`.id WHERE don_hangs.nguoi_dungs_id='.$id);
-        $amountItemsPage = 10;
-        $totalPages = FLOOR(sizeof($orders['orders']) / $amountItemsPage);
-        if (sizeof($orders['orders']) % $amountItemsPage > 0) {
-            $totalPages++;
-        }
+        // $orders['orders'] = DB::select('SELECT nguoi_dungs.TenNguoidung,nguoi_dungs.SDT,don_hangs.id,don_hangs.ThoiGianMua,don_hangs.Tongtien FROM `don_hangs`
+        // INNER JOIN `nguoi_dungs` ON `don_hangs`.nguoi_dungs_id=`nguoi_dungs`.id WHERE don_hangs.nguoi_dungs_id='.$id);
+        // $amountItemsPage = 10;
+        // $totalPages = FLOOR(sizeof($orders['orders']) / $amountItemsPage);
+        // if (sizeof($orders['orders']) % $amountItemsPage > 0) {
+        //     $totalPages++;
+        // }
         $currentPage = 1;
         $html = '<ul class="pagination"><li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
         if (is_numeric($request->page)) {
@@ -128,25 +128,24 @@ class CustomerController extends Controller
             <a class="page-link" href="/quan-ly-nguoi-dung/show/'.$id.'?page=' . ($currentPage - 1) . '">Previous</a></li>';
         };
 
-        $orders = array_slice($orders['orders'], ($currentPage - 1) * $amountItemsPage, $amountItemsPage);
-        for ($i = 1; $i <= $totalPages; $i++) {
-            $disabled='';
-            if($i==$currentPage)$disabled='disabled';
-            $html .= '<li class="page-item '.$disabled.'"><a class="page-link" href="/quan-ly-nguoi-dung/show/'.$id.'?page=' . $i . '">' . $i . '</a></li>';
-        }
+        // $orders = array_slice($orders['orders'], ($currentPage - 1) * $amountItemsPage, $amountItemsPage);
+        // for ($i = 1; $i <= $totalPages; $i++) {
+        //     $disabled='';
+        //     if($i==$currentPage)$disabled='disabled';
+        //     $html .= '<li class="page-item '.$disabled.'"><a class="page-link" href="/quan-ly-nguoi-dung/show/'.$id.'?page=' . $i . '">' . $i . '</a></li>';
+        // }
 
-        if ($currentPage == $totalPages) {
-            $html .= '  <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
-        } else {
-            $html .= ' <li class="page-item"><a class="page-link" href="/quan-ly-nguoi-dung/show/'.$id.'?page=' . ($currentPage + 1) . '">Next</a></li>';
-         }
+        // if ($currentPage == $totalPages) {
+        //     $html .= '  <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+        // } else {
+        //     $html .= ' <li class="page-item"><a class="page-link" href="/quan-ly-nguoi-dung/show/'.$id.'?page=' . ($currentPage + 1) . '">Next</a></li>';
+        //  }
 
         //  dd($user);
-        return view('pages.cap-nhat.cap-nhat-nguoi-dung',compact('user','orders','html'));
+        return view('pages.cap-nhat.cap-nhat-nguoi-dung',compact('user','html'));
     }
     public function MyProfile(Request $request)
     {
-
         $admin =Auth::user();
         $user =NguoiDung::where('nguoi_dungs.id','=',$admin->id)
         ->join('loai_nguoi_dungs','nguoi_dungs.loai_nguoi_dungs_id','=','loai_nguoi_dungs.id')

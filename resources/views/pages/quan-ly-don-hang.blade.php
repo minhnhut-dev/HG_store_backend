@@ -123,29 +123,29 @@
 
                                 $stt++;
                                 switch($item->trang_thai_don_hangs_id){
-                                        case 1: 
+                                        case 1:
                                             $success = 'bg-warning';
                                             break;
-                                        
-                                        case 2: 
+
+                                        case 2:
                                             $success = 'bg-primary';
                                             break;
-                                        
-                                        case 3: 
+
+                                        case 3:
                                             $success = 'bg-info';
                                             break;
-                                        
-                                        case 4: 
+
+                                        case 4:
                                             $success = 'bg-dark';
                                             break;
-                                        
-                                        case 5: 
+
+                                        case 5:
                                             $success = 'bg-success';
                                             break;
-                                        
+
                                         default:
                                             $success = 'bg-danger';
-                                        
+
                                     }
                                 @endphp
                                 <tr>
@@ -153,8 +153,8 @@
                                         {{$stt}}
                                     </td> -->
                                     <td>{{$item->id}}</td>
-                                    <td>{{$item->TenNguoidung}}</td>
-                                    <td>{{$item->SDT}}</td>
+                                    <td>{{$item->ten_nguoi_dung}}</td>
+                                    <td>{{$item->sdt}}</td>
                                     <td>{{date_format(date_create($item->ThoiGianMua),'d-m-Y')}}</td>
                                     <td>{{number_format($item->Tongtien, 0, '', ',')}}</td>
                                     <td> <span class="card {{$success}} status">{{$item->TenTrangThai}}</span></td>

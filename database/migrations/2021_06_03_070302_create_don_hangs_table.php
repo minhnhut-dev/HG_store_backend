@@ -18,7 +18,11 @@ class CreateDonHangsTable extends Migration
             // Khoa ngoai
             $table->unsignedBigInteger('hinh_thuc_giao_hangs_id');
             $table->unsignedBigInteger('hinh_thuc_thanh_toans_id');
-            $table->unsignedBigInteger('nguoi_dungs_id');
+            $table->string('ten_nguoi_dung');
+            $table->string('diachigiaohang');
+            $table->string('sdt');
+            $table->string('email');
+
             $table->date('ThoiGianMua');
             $table->string('Tongtien');
             $table->unsignedBigInteger('trang_thai_don_hangs_id');
