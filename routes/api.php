@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,8 @@ Route::post('/checkLoginGoogle','AuthController@checkLoginGoogle');
 Route::post('/order', 'OrderController@create');
 Route::post('/orderAPI', 'OrderController@createOrder');
 Route::get('/getInformationOrderById/{id}','OrderController@getInformationOrderById');
+Route::post('/orderMomo', 'PaymentController@createOrderMomo');
+
 // mail xác thực
 Route::get('user/activation/{token}', 'AuthController@activateUser')->name('user.activate');
 Route::get('user/reset-password/{token}', 'AuthController@resetPasswordUser')->name('user.reset-password');

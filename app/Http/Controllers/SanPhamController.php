@@ -21,6 +21,8 @@ class SanPhamController extends Controller
 {
     //
     private $LoaiSanPham;
+    private $htmlselect;
+
     public function __construct(LoaiSanPham $LoaiSanPham)
     {
         $this->htmlselect = '';

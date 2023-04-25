@@ -191,6 +191,7 @@ class OrderController extends Controller
         }
         $order->Tongtien = $total;
         $order->save();
+
         OrderConfirmationService::sendOrderConfirmationEmail($order->id);
         DB::commit();
         return response(['message' => 'successful', 'order' => $order]);

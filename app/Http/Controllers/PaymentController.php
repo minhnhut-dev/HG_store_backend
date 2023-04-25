@@ -9,10 +9,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
+use App\Http\Controllers\OrderController;
+use App\Classes\PaymentService;
 class PaymentController extends Controller
 {
-    //
     public function createOrder(Request $request)
     {
         DB::beginTransaction();
@@ -121,6 +121,67 @@ class PaymentController extends Controller
              'data' => $vnp_Url);
         $data= json_encode($returnData);
         return response()->json(['pay_url'=>$returnData,'Order'=>$order]);
+    }
+    public function createOrderMomo(Request $request){
+        DB::beginTransaction();
+        $rule = [
+            "hinh_thuc_giao_hangs_id" => "required",
+            'hinh_thuc_thanh_toans_id' => "required",
+            'trang_thai_don_hangs_id' => "required",
+        ];
+        $customMessage = [
+            "hinh_thuc_giao_hangs_id.required" => "Hình thức giao hàng bắt buộc !",
+            "hinh_thuc_thanh_toans_id.required" => "Hình thức thanh toán bắt buộc !",
+            "trang_thai_don_hangs_id.required" => " Trạng thái đơn hàng  là bắt buộc!",
+
+        ];
+        $validator = Validator::make($request->all(), $rule, $customMessage);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+            DB::rollBack();
+        }
+        // try {
+        $order = new DonHang;
+        $order->ten_nguoi_dung = $request->ten_nguoi_dung;
+        $order->email = $request->email;
+        $order->sdt = $request->sdt;
+        $order->diachigiaohang = $request->diachigiaohang;
+        $order->hinh_thuc_giao_hangs_id = $request->hinh_thuc_giao_hangs_id;
+        $order->hinh_thuc_thanh_toans_id = $request->hinh_thuc_thanh_toans_id;
+        $order->ThoiGianMua = Carbon::now();
+        $order->Tongtien = 0;
+        $order->trang_thai_don_hangs_id = $request->trang_thai_don_hangs_id;
+        $order->save();
+        $items = ($request->line_items);
+        $total = 0;
+
+        foreach ($items as $item) {
+            $total += $item['DonGia'] * $item['SoLuong'];
+            $result = SanPhamController::AffterOrder($item['san_phams_id'], $item['SoLuong']);
+            if ($result['result']) {
+                $orderItem = new ChiTietDonHang;
+                $orderItem->don_hangs_id = $order->id;
+                $orderItem->san_phams_id = $item['san_phams_id'];
+                $orderItem->DonGia = $item['DonGia'];
+                $orderItem->SoLuong = $item['SoLuong'];
+                $orderItem->ThanhTien = $item['SoLuong'] * $item['DonGia'];
+                $orderItem->save();
+            } else {
+                DB::rollBack();
+                return response(['message' => 'unsuccessful', 'error' => 'Số lượng sản phẩm ' . $result['name'] . ' không được quá ' . $result['amount']], 400);
+            }
+        }
+        $order->Tongtien = $total;
+        $order->save();
+        $data = PaymentService::Momo($order);
+        if($data -> status() == 200) {
+            return response(['message' => 'successful', 'order' => $order, 'payURL' => json_decode($data -> body())-> payUrl]);
+            OrderConfirmationService::sendOrderConfirmationEmail($order->id);
+            DB::commit();
+        }else{
+            return response(['message' => 'unSuccessful', 'error' => json_decode($data -> body())-> message]);
+            DB::rollBack();
+        }
     }
 
 }

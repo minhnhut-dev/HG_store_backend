@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Http;
 
 class PaymentService
 {
-    public function Momo($amount, $orderId){
+    public static function Momo($order){
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
         $partnerCode = 'MOMO6KRQ20210610';
         $accessKey = 'MYc8b7Wo8858OGUg';
@@ -16,14 +16,14 @@ class PaymentService
         $extraData = "";
         $request_type = 'captureWallet';
 
-        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $orderId . "&requestType=" . $request_type;
+        $rawHash = "accessKey=" . $accessKey . "&amount=" . $order->Tongtien . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $orderId . "&requestType=" . $request_type;
         $signature = hash_hmac("sha256", $rawHash, $secretKey);
 
         $data = array('partnerCode' => $partnerCode,
-        'partnerName' => "Test",
+        'partnerName' => "Ha Giang Store",
         "storeId" => "MomoTestStore",
         'requestId' => $orderId,
-        'amount' => $amount,
+        'amount' => $order->Tongtien,
         'orderId' => $orderId,
         'orderInfo' => $orderInfo,
         'redirectUrl' => $redirectUrl,
@@ -32,7 +32,7 @@ class PaymentService
         'extraData' => $extraData,
         'requestType' => $request_type,
         'signature' => $signature);
-        $res = Http::post($endpoint, $data);
-        return $data;
+        $response = Http::post($endpoint, $data);
+        return $response;
     }
 }
