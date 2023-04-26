@@ -27,18 +27,19 @@ class OrderController extends Controller
         INNER JOIN `trang_thai_don_hangs` ON `don_hangs`.trang_thai_don_hangs_id=`trang_thai_don_hangs`.id ORDER BY don_hangs.ThoiGianMua DESC;
         ');
         if ($request->search) {
-            $orders['orders'] = DB::select('SELECT nguoi_dungs.TenNguoidung, nguoi_dungs.SDT, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.ThoiGianMua, don_hangs.Tongtien, don_hangs.trang_thai_don_hangs_id, trang_thai_don_hangs.TenTrangThai
+            $orders['orders'] = DB::select('SELECT don_hangs.ten_nguoi_dung, don_hangs.sdt, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.ThoiGianMua, don_hangs.Tongtien, don_hangs.trang_thai_don_hangs_id, trang_thai_don_hangs.TenTrangThai
             FROM `don_hangs`
             INNER JOIN `trang_thai_don_hangs` ON `don_hangs`.trang_thai_don_hangs_id=`trang_thai_don_hangs`.id
             WHERE don_hangs.id = "' . $request->search . '"
-            OR nguoi_dungs.TenNguoidung LIKE "%' . $request->search . '%"
-            OR nguoi_dungs.SDT LIKE "%' . $request->search . '%"
+            OR don_hangs.ten_nguoi_dung LIKE "%' . $request->search . '%"
+            OR don_hangs.sdt LIKE "%' . $request->search . '%"
             ORDER BY don_hangs.ThoiGianMua DESC;
             ');
         }
+
         if ($request->status > -1) {
-            $query = 'SELECT nguoi_dungs.TenNguoidung, nguoi_dungs.SDT, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.ThoiGianMua, don_hangs.Tongtien, don_hangs.trang_thai_don_hangs_id, trang_thai_don_hangs.TenTrangThai
-            FROM `don_hangs` INNER JOIN `nguoi_dungs` ON `don_hangs`.nguoi_dungs_id=`nguoi_dungs`.id
+            $query = 'SELECT don_hangs.ten_nguoi_dung, don_hangs.sdt, don_hangs.id, don_hangs.ThoiGianMua, don_hangs.ThoiGianMua, don_hangs.Tongtien, don_hangs.trang_thai_don_hangs_id, trang_thai_don_hangs.TenTrangThai
+            FROM `don_hangs`
             INNER JOIN `trang_thai_don_hangs` ON `don_hangs`.trang_thai_don_hangs_id=`trang_thai_don_hangs`.id ';
             if ($request->begin) $query .= 'WHERE don_hangs.ThoiGianMua >= "' . $request->begin . '" AND don_hangs.ThoiGianMua <= "' . $request->end . '" ';
             else $query .= 'WHERE true ';
@@ -143,12 +144,10 @@ class OrderController extends Controller
 
         DB::beginTransaction();
         $rule = [
-            "hinh_thuc_giao_hangs_id" => "required",
             'hinh_thuc_thanh_toans_id' => "required",
             'trang_thai_don_hangs_id' => "required",
         ];
         $customMessage = [
-            "hinh_thuc_giao_hangs_id.required" => "Hình thức giao hàng bắt buộc !",
             "hinh_thuc_thanh_toans_id.required" => "Hình thức thanh toán bắt buộc !",
             "trang_thai_don_hangs_id.required" => " Trạng thái đơn hàng  là bắt buộc!",
 
@@ -164,7 +163,7 @@ class OrderController extends Controller
         $order->email = $request->email;
         $order->sdt = $request->sdt;
         $order->diachigiaohang = $request->diachigiaohang;
-        $order->hinh_thuc_giao_hangs_id = $request->hinh_thuc_giao_hangs_id;
+        $order->hinh_thuc_giao_hangs_id = 1;
         $order->hinh_thuc_thanh_toans_id = $request->hinh_thuc_thanh_toans_id;
         $order->ThoiGianMua = Carbon::now();
         $order->Tongtien = 0;

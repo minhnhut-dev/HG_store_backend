@@ -232,7 +232,6 @@ class CustomerController extends Controller
         //     return redirect('/quan-ly-nguoi-dung/show/'.$id)->withErrors($validator);
         // }
 
-
         $admin =Auth::user();
         if($request->password){
             $rule=[
@@ -257,7 +256,7 @@ class CustomerController extends Controller
            else
            $user->password =  Hash::make($request->password);
            $user->DiaChi = $request->dia_chi;
-           $user    ->TrangThai = $request->TrangThai;
+           $user->TrangThai = $request->TrangThai;
            $user->GioiTinh = $request->sex;
            $user->save();
            if($admin->id==$id) return redirect('/quan-ly-nguoi-dung/my-profile');

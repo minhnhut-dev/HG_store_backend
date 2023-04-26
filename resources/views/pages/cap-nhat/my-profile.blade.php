@@ -90,7 +90,7 @@
                 <div class="error">{{$item}}</div>
                 @endforeach
                 @endif
-                
+
             </div>
             @endif
             @if(!$errors->has('password'))
@@ -110,15 +110,22 @@
                 <div class="error">{{$item}}</div>
                 @endforeach
                 @endif
-                
+
             </div>
             @endif
 
-            
+
             <div class="col-3 select">
                 <label for="nhan">Thuộc loại:</label>
                 <select class="form-control" id="nhan" name="loai_nguoi_dungs_id" style="background-image: none;" disabled>
                     <option value="">{{$user->TenLoai}}</option>
+                </select>
+            </div>
+            <div class="col-3 select">
+                <label for="nhan">Thuộc loại:</label>
+                <select class="form-control" id="nhan" name="TrangThai" style="background-image: none;">
+                    <option value="1">Hoạt động</option>
+                    <option value="0">Tạm ngưng</option>
                 </select>
             </div>
             <div class="col-3 ">

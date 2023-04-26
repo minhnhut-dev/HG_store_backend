@@ -125,15 +125,12 @@ class PaymentController extends Controller
     public function createOrderMomo(Request $request){
         DB::beginTransaction();
         $rule = [
-            "hinh_thuc_giao_hangs_id" => "required",
             'hinh_thuc_thanh_toans_id' => "required",
             'trang_thai_don_hangs_id' => "required",
         ];
         $customMessage = [
-            "hinh_thuc_giao_hangs_id.required" => "Hình thức giao hàng bắt buộc !",
             "hinh_thuc_thanh_toans_id.required" => "Hình thức thanh toán bắt buộc !",
-            "trang_thai_don_hangs_id.required" => " Trạng thái đơn hàng  là bắt buộc!",
-
+            "trang_thai_don_hangs_id.required" => " Trạng thái đơn hàng  là bắt buộc!"
         ];
         $validator = Validator::make($request->all(), $rule, $customMessage);
         if ($validator->fails()) {
@@ -146,7 +143,7 @@ class PaymentController extends Controller
         $order->email = $request->email;
         $order->sdt = $request->sdt;
         $order->diachigiaohang = $request->diachigiaohang;
-        $order->hinh_thuc_giao_hangs_id = $request->hinh_thuc_giao_hangs_id;
+        $order->hinh_thuc_giao_hangs_id = 1;
         $order->hinh_thuc_thanh_toans_id = $request->hinh_thuc_thanh_toans_id;
         $order->ThoiGianMua = Carbon::now();
         $order->Tongtien = 0;
@@ -183,5 +180,4 @@ class PaymentController extends Controller
             DB::rollBack();
         }
     }
-
 }
