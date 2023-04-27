@@ -7,7 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Quản Lý Cửa Hàng Tiến Vũ Store</title>
+    <title>Quản Lý Cửa Hàng Ha Giang Store</title>
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href={{ asset('dist/img/favicon.ico') }}>
 
@@ -41,7 +41,7 @@
 
 <body class="hold-transition sidebar-mini">
     <div class="header-title text-center bg-success text-white" style="font-family: Consolas;">
-        Trang quản lý Tiến Vũ Store
+        Trang quản lý Hà Giang Store
     </div>
     <div class="wrapper">
         <!-- Navbar -->

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>Quản Lý Cửa Hàng Tiến Vũ Store</title>
+    <title>Quản Lý Cửa Hàng Ha Giang Store</title>
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href={{ asset('dist/img/favicon.ico') }}>
 

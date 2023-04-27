@@ -49,13 +49,13 @@ class RevenueYearExport implements FromCollection, WithEvents , WithCustomStartC
             $item["orders"]=$orders[$i]["amount"];
             $collection->push($item);
             $i++;
-        }   
+        }
         return $collection;
     }
 
-    public function styles(Worksheet $sheet)    
+    public function styles(Worksheet $sheet)
     {
-        
+
         return [
             2    => ['font' => ['bold' => true, 'italic' => true,'size' => 18]],
             7    => ['font' => ['bold' => true]],
@@ -65,16 +65,16 @@ class RevenueYearExport implements FromCollection, WithEvents , WithCustomStartC
             5    => ['font' => ['bold' => true]],
             6    => ['font' => ['bold' => true]],
             12    => ['font' => ['bold' => true]],
-          
+
         ];
     }
     public function registerEvents(): array
-{   
-   
+{
+
     return [
         AfterSheet::class    => function(AfterSheet $event) {
             $max_border = $this->month==0?24:$this->month+12;
-            
+
             $value = 'B12:E'.$max_border;
             $value_row_2 = 'C12:C'.$max_border;
             $value_row_3 = 'D12:D'.$max_border;
@@ -102,7 +102,7 @@ class RevenueYearExport implements FromCollection, WithEvents , WithCustomStartC
                     ],
                 ]
             ]);
-            
+
             $event->sheet->getStyle($value)->applyFromArray([
                 'borders' => [
                     'outline' => [
@@ -147,10 +147,10 @@ class RevenueYearExport implements FromCollection, WithEvents , WithCustomStartC
     public function columnWidths(): array
     {
         return [
-            'B' => 17,        
+            'B' => 17,
             'C' => 17,
-            'D' => 17,  
-            'E' => 17,    
+            'D' => 17,
+            'E' => 17,
         ];
     }
     public function drawings()
@@ -178,11 +178,11 @@ class RevenueYearExport implements FromCollection, WithEvents , WithCustomStartC
             $total_orders+=$item["amount"];
         }
         $name =  auth()->user()? auth()->user()->TenNguoidung: 'Admin';
-        
+
         return [
-            ['','     CỬA HÀNG MÁY TÍNH TIẾN VŨ STORE'],
+            ['','     CỬA HÀNG MÁY TÍNH HA GIANG STORE'],
             [''],
-            ['Địa chỉ: ','41A Đ. Phú Diễn, Phú Diễn, Bắc Từ Liêm, Hà Nội'],
+            ['Địa chỉ: ','1135/17/31 Huỳnh Tấn Phát, quận 7, TPHCM'],
             ['Nội dung: ','Doanh thu  năm '.$this->year],
             ['Người xuất: ',$name],
             ['Ngày xuất: ', date("H:i d-m-Y")],
@@ -198,13 +198,13 @@ class RevenueYearExport implements FromCollection, WithEvents , WithCustomStartC
     }
     public function map($bill): array
     {
-      
+
         return [
             $bill["timestamp"],
             $bill["month"],
             number_format($bill["revenue"], 0, '', ','),
             number_format($bill["orders"], 0, '', ','),
-         
+
         ];
     }
 }
